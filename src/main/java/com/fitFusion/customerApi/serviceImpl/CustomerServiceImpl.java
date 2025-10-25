@@ -16,19 +16,23 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepo customerRepo;
+    @Autowired
     private EmailService emailService;
 
     @Override
     public CustomerDto saveCustomer(CustomerDto customerDto) {
 
         CustomerEntity customerEntity = CustomerMapper.convertToEntity(customerDto);
-        customerEntity.setPassword(this.randomPasswordGenerator(6));
+        String randomPwd = this.randomPasswordGenerator(6);
+        customerEntity.setPassword(randomPwd);
         customerEntity.setPwdUpdated("NO");
+
         CustomerEntity save = customerRepo.save(customerEntity);
 
-        String subject = "";
-        String body = save.getPassword();
-        String to = "";
+        String subject = "your account is created";
+        String body = "your temporary password is " + randomPwd;
+        String to = customerDto.getEmail();
+
         boolean email = emailService.sendEmail(subject, body, to);
         if (email) {
             return CustomerMapper.convertToDto(save);
@@ -45,17 +49,34 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean resetPwd(PasswordUpdateDto pwdUpdate) {
+    public boolean resetPwd(PasswordUpdateDto pwdUpdateDto) {
+        CustomerEntity customerEntity = customerRepo.findByEmail(pwdUpdateDto.getEmail());
+        if(customerEntity !=null) {
+            customerEntity.setPassword(pwdUpdateDto.getConformPassword());
+            customerEntity.setPwdUpdated("YES");
+            customerRepo.save(customerEntity);
+            return true;
+        }
+
         return false;
     }
 
     @Override
     public CustomerDto getCustomerByEmail(String email) {
+        CustomerEntity customerEntity = customerRepo.findByEmail(email);
+        if(customerEntity != null) {
+            return CustomerMapper.convertToDto(customerEntity);
+        }
         return null;
     }
 
     @Override
     public CustomerDto updateCustomer(CustomerDto customerDto) {
+        CustomerEntity customerEntity = customerRepo.findByEmail(customerDto.getEmail());
+        if(customerEntity!= null){
+            customerRepo.save(customerEntity);
+            return CustomerMapper.convertToDto(customerEntity);
+        }
         return null;
     }
 
