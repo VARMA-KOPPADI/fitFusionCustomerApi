@@ -13,5 +13,4 @@ public class ShippingAdressDto {
     private String zipCode;
     private String addrType;
     private String deleteSw;
-    private CustomerEntity customer;
 }

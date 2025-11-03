@@ -23,8 +23,10 @@ public class CustomerEntity {
     private String pwdUpdated;
     private String phoneNo;
     @CreationTimestamp
+    @Column(name ="date_created", updatable = false)
     private LocalDate dateCreated;
     @UpdateTimestamp
+    @Column(name = "last_updated", insertable = false)
     private LocalDate lastUpdated;
 
 }

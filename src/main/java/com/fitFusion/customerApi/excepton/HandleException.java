@@ -1,12 +1,14 @@
 package com.fitFusion.customerApi.excepton;
 
 import com.fitFusion.customerApi.apiResponse.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Slf4j
 public class HandleException {
     @ExceptionHandler(value = NullPointerException.class)
     public ResponseEntity<ApiResponse<String>> nullExceptionHandle(NullPointerException e) {
@@ -14,6 +16,7 @@ public class HandleException {
         response.setStatus(500);
         response.setMessage(e.getLocalizedMessage());
         response.setData(null);
+        log.error(e.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -24,6 +27,7 @@ public class HandleException {
         response.setStatus(500);
         response.setMessage(e.getLocalizedMessage());
         response.setData(null);
+        log.error(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
