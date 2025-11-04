@@ -12,8 +12,8 @@ public class ShippingAddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long addrId;
-    private String hno;
+    private Integer addrId;
+    private String phno;
     private String street;
     private String city;
     private String state;

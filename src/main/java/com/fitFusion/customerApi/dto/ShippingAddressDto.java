@@ -1,10 +1,9 @@
 package com.fitFusion.customerApi.dto;
 
-import com.fitFusion.customerApi.entity.CustomerEntity;
 import lombok.Data;
 
 @Data
-public class ShippingAdressDto {
+public class ShippingAddressDto {
     private Long addrId;
     private String hno;
     private String street;
