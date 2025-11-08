@@ -9,5 +9,4 @@ public interface AddressService {
     public ShippingAddressDto getAddress(Integer id);
     public List<ShippingAddressDto> getCustomerAddresses(Integer customerId);
     public boolean deleteAddress(Integer addressId);
-
 }
